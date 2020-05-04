@@ -1,3 +1,20 @@
+// autobind decorator
+// function autobind(target: any, methodName: string, descriptor: PropertyDescriptor) {
+// wiem ze te zmienne istnieja ale nie bede ich uzywal wiec oznacze jako _
+function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
+    const originalMethod = descriptor.value;
+    const adjDescripton: PropertyDescriptor = {
+        configurable: true,
+        get() {
+            const boundFunction = originalMethod.bind(this);
+            return boundFunction;
+        }
+    }
+    return adjDescripton;
+}
+
+
+// ProjectInput Class
 class ProjectInput {
     templateElement: HTMLTemplateElement; // enable because added in tsconifg lib: dom
     hostElement: HTMLDivElement;
@@ -27,6 +44,7 @@ class ProjectInput {
         this.attach();
     }
 
+    @autobind
     private submitHandler(e: Event) {
         e.preventDefault();
         console.log(this.titleInputElement.value);
