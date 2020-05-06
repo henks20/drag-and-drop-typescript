@@ -31,7 +31,7 @@ class ProjectState extends State<Project> {
 
   private constructor() {
     super();
-  } // Singleton
+  }
 
   static getInstance() {
     if (this.instance) {
@@ -51,7 +51,7 @@ class ProjectState extends State<Project> {
     );
     this.projects.push(newProject);
     for (const listenerFn of this.listeners) {
-      listenerFn(this.projects.slice()); // slice to have copy not original
+      listenerFn(this.projects.slice());
     }
   }
 }
@@ -61,7 +61,7 @@ const projectState = ProjectState.getInstance();
 // Validation
 interface Validatable {
   value: string | number;
-  required?: boolean; // może być bez znaku zapytania ale wtedy boolean | undefined
+  required?: boolean;
   minLength?: number;
   maxLength?: number;
   min?: number;
@@ -71,9 +71,8 @@ interface Validatable {
 function validate(validatableInput: Validatable) {
   let isValid = true;
   if (validatableInput.required) {
-    // if(typeof validatableInput.value === 'string'){} => II opcja zamiast toString()
     isValid = isValid && validatableInput.value.toString().trim().length !== 0;
-  } // != zawiera w sobie null i undefined (JS feature)
+  }
   if (
     validatableInput.minLength != null &&
     typeof validatableInput.value === "string"
@@ -104,8 +103,6 @@ function validate(validatableInput: Validatable) {
 }
 
 // autobind decorator
-// function autobind(target: any, methodName: string, descriptor: PropertyDescriptor) {
-// wiem ze te zmienne istnieja ale nie bede ich uzywal wiec oznacze jako _
 function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value;
   const adjDescripton: PropertyDescriptor = {
@@ -119,7 +116,6 @@ function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
 }
 
 // Component Base Class
-// jest to klasa abstrakcyjna zeby nie moc utworzyc instancji tej klasy, a jedynie dziedziczyc po niej, zeby sluzyla tylko jako extents
 abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   templateElement: HTMLTemplateElement;
   hostElement: T;
@@ -129,9 +125,8 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
     templateId: string,
     hostElementId: string,
     insertAtStart: boolean,
-    newElementId?: string // optional parameters has to be at the end thats someone can omit it
+    newElementId?: string
   ) {
-    // ? => optional; alternative => newElementId: string | undefinded
     this.templateElement = document.getElementById(
       templateId
     )! as HTMLTemplateElement;
@@ -154,9 +149,6 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
     );
   }
 
-  // klasy abstrakcyjne brakuje implementacji, ale zmuszamy klasy ktore beda dziedziczyc komponent do zaimplementowania tych dwoch funkcji i logiki do nich
-  // private abstract jest niedozwolone
-  //   abstract configure?(): void; => moge też robić funkcje opcjonalne
   abstract configure(): void;
   abstract renderContent(): void;
 }
@@ -235,7 +227,6 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
   renderContent() {}
 
   private gatherUserInput(): [string, string, number] | void {
-    // union of either tuple or void; tuple is just an array
     const enteredTitle = this.titleInputElement.value;
     const enteredDescription = this.descriptionInputElement.value;
     const enteredPeople = this.peopleInputElement.value;
@@ -265,9 +256,8 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     ) {
       alert("Invalid input, please try again!");
       return;
-      // throw; albo throw Error
     } else {
-      return [enteredTitle, enteredDescription, +enteredPeople]; // or parseFloat()
+      return [enteredTitle, enteredDescription, +enteredPeople];
     }
   }
 
