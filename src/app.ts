@@ -55,7 +55,7 @@ class ProjectState extends State<Project> {
 
   addProject(title: string, description: string, numOfPeople: number) {
     const newProject = new Project(
-      Math.random.toString(),
+      Math.random().toString(),
       title,
       description,
       numOfPeople,
@@ -129,14 +129,14 @@ function validate(validatableInput: Validatable) {
 // autobind decorator
 function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value;
-  const adjDescripton: PropertyDescriptor = {
+  const adjDescriptor: PropertyDescriptor = {
     configurable: true,
     get() {
       const boundFunction = originalMethod.bind(this);
       return boundFunction;
     },
   };
-  return adjDescripton;
+  return adjDescriptor;
 }
 
 // Component Base Class
@@ -183,7 +183,7 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement>
   private project: Project;
 
   get persons() {
-    if (this.project.people == 1) {
+    if (this.project.people === 1) {
       return "1 person";
     } else {
       return `${this.project.people} persons`;
@@ -271,7 +271,7 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement>
         return prj.status === ProjectStatus.Finished;
       });
       this.assignedProjects = relevantProjects;
-      this.renderProjcts();
+      this.renderProjects();
     });
   }
 
@@ -282,7 +282,7 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement>
       this.type.toUpperCase() + " PROJECTS";
   }
 
-  private renderProjcts() {
+  private renderProjects() {
     const listEl = document.getElementById(
       `${this.type}-projects-list`
     )! as HTMLUListElement;
@@ -316,7 +316,7 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
   }
 
   configure() {
-    this.element.addEventListener("submit", this.submitHandler.bind(this));
+    this.element.addEventListener("submit", this.submitHandler);
   }
 
   renderContent() {}
