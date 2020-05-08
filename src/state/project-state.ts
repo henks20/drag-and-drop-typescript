@@ -53,5 +53,6 @@ export class ProjectState extends State<Project> {
     }
   }
 }
-
+// pomimo że importujemy ten const poniżej kilka razy to wykona sie tylko RAZ
+console.log("Running");
 export const projectState = ProjectState.getInstance();
